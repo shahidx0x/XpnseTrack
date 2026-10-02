@@ -12,9 +12,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            XpnseTrackTheme {
+            XpnseTrackTheme(content = {
                 XpnseTrackApp()
-            }
+            })
         }
     }
 }
