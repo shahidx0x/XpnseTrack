@@ -14,6 +14,6 @@ val Expense = Color(0xFFD92D3A)
 private val LightColors = lightColorScheme(primary=Brand,secondary=Color(0xFF386A58),background=Color(0xFFF8FAF8),surface=Color.White,error=Expense)
 private val DarkColors = darkColorScheme(primary=Color(0xFF55DB9C),secondary=Color(0xFF9BD1B7),background=Color(0xFF0D1511),surface=Color(0xFF141D18),error=Color(0xFFFFB3B7))
 
-@Composable fun XpnseTrackTheme(darkTheme:Boolean=isSystemInDarkTheme(),content:@Composable()->Unit){
+@Composable fun XpnseTrackTheme(darkTheme:Boolean=isSystemInDarkTheme(),content: @Composable () -> Unit){
  MaterialTheme(colorScheme=if(darkTheme) DarkColors else LightColors,typography=Typography(),shapes=Shapes(extraSmall=RoundedCornerShape(8.dp),small=RoundedCornerShape(12.dp),medium=RoundedCornerShape(18.dp),large=RoundedCornerShape(24.dp)),content=content)
 }
