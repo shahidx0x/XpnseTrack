@@ -520,7 +520,7 @@ private fun SectionTitle(text: String) { Text(text, fontWeight = FontWeight.Bold
 
 @Composable
 private fun TxRow(tx: Tx, onClick: () -> Unit) {
-    Card(Modifier.fillMaxWidth().padding(vertical = 3.dp), onClick = onClick) {
+    Card(onClick = onClick, modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Default.Receipt, null); Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) { Text(tx.title, fontWeight = FontWeight.SemiBold); Text(tx.subtitle, style = MaterialTheme.typography.bodySmall) }
