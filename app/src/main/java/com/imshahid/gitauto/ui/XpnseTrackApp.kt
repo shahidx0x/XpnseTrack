@@ -549,7 +549,7 @@ private fun DetailRow(label: String, value: String) {
 
 @Composable
 private fun SettingsRow(label: String, icon: ImageVector, onClick: () -> Unit) {
-    Card(Modifier.fillMaxWidth().padding(vertical = 3.dp), onClick = onClick) {
+    Card(onClick = onClick, modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, null); Spacer(Modifier.width(12.dp)); Text(label, Modifier.weight(1f)); Icon(Icons.Default.ChevronRight, null)
         }
