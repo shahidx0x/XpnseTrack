@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -188,21 +190,276 @@ private fun OnboardingScreen(icon: ImageVector, title: String, body: String, but
 }
 
 @Composable
-private fun SignInScreen(onSignIn: () -> Unit, onSignUp: () -> Unit, onForgot: () -> Unit) = ResponsivePage {
+private fun SignInScreen(onSignIn: () -> Unit, onSignUp: () -> Unit, onForgot: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    Spacer(Modifier.height(28.dp))
-    Icon(Icons.Default.Eco, null, tint = Brand, modifier = Modifier.size(54.dp).align(Alignment.CenterHorizontally))
-    Text("Welcome back", fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterHorizontally))
-    Spacer(Modifier.height(24.dp))
-    OutlinedTextField(email, { email = it }, Modifier.fillMaxWidth(), label = { Text("Email") }, singleLine = true)
-    Spacer(Modifier.height(10.dp))
-    OutlinedTextField(password, { password = it }, Modifier.fillMaxWidth(), label = { Text("Password") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
-    TextButton(onClick = onForgot, modifier = Modifier.align(Alignment.End)) { Text("Forgot password?") }
-    Button(onClick = onSignIn, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("Sign in") }
-    Spacer(Modifier.height(10.dp))
-    OutlinedButton(onClick = onSignIn, modifier = Modifier.fillMaxWidth()) { Icon(Icons.Default.AccountCircle, null); Spacer(Modifier.width(8.dp)); Text("Continue with Google") }
-    TextButton(onClick = onSignUp, modifier = Modifier.align(Alignment.CenterHorizontally)) { Text("Create account") }
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    BoxWithConstraints(
+        Modifier
+            .fillMaxSize()
+            .background(Color(0xFFFBFEFC))
+    ) {
+        val horizontal = if (maxWidth < 420.dp) 22.dp else 30.dp
+        val maxContent = if (maxWidth < 700.dp) 520.dp else 560.dp
+
+        Box(
+            Modifier
+                .size(230.dp)
+                .offset(x = (-105).dp, y = 76.dp)
+                .background(Color(0xFFEFFAF3), CircleShape)
+        )
+        Box(
+            Modifier
+                .size(240.dp)
+                .align(Alignment.TopEnd)
+                .offset(x = 115.dp, y = (-100).dp)
+                .background(Color(0xFFF2FAF5), CircleShape)
+        )
+        Box(
+            Modifier
+                .size(170.dp)
+                .align(Alignment.CenterEnd)
+                .offset(x = 78.dp, y = (-105).dp)
+                .background(Color(0xFFE7F7EC), CircleShape)
+        )
+
+        Column(
+            modifier = Modifier
+                .widthIn(max = maxContent)
+                .fillMaxHeight()
+                .align(Alignment.TopCenter)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = horizontal)
+                .padding(top = 58.dp, bottom = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Surface(
+                shape = RoundedCornerShape(18.dp),
+                color = Brand,
+                shadowElevation = 7.dp,
+                modifier = Modifier.size(72.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        Icons.Default.BarChart,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(38.dp)
+                    )
+                    Icon(
+                        Icons.Default.Eco,
+                        contentDescription = null,
+                        tint = Color(0xFFB9E86A),
+                        modifier = Modifier
+                            .size(25.dp)
+                            .align(Alignment.TopEnd)
+                            .padding(top = 3.dp, end = 3.dp)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "Xpnse",
+                    color = Color(0xFF071A14),
+                    fontSize = 31.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    "Track",
+                    color = Brand,
+                    fontSize = 31.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+            }
+
+            Text(
+                "Track Today. Brighter Tomorrow.",
+                color = Color(0xFF7E8785),
+                fontSize = 14.sp
+            )
+
+            Spacer(Modifier.height(56.dp))
+
+            Text(
+                "Welcome back!",
+                color = Color(0xFF071A14),
+                fontSize = 31.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                "Sign in to manage your expenses\nand stay on top of your goals.",
+                color = Color(0xFF7C8583),
+                fontSize = 17.sp,
+                textAlign = TextAlign.Center,
+                lineHeight = 24.sp
+            )
+
+            Spacer(Modifier.height(30.dp))
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 68.dp),
+                label = { Text("Email") },
+                placeholder = { Text("you@example.com") },
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Email,
+                        contentDescription = null,
+                        tint = Color(0xFF697471)
+                    )
+                },
+                shape = RoundedCornerShape(18.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Brand,
+                    unfocusedBorderColor = Color(0xFFD9DEDC),
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
+                )
+            )
+
+            Spacer(Modifier.height(14.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 68.dp),
+                label = { Text("Password") },
+                placeholder = { Text("••••••••") },
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Lock,
+                        contentDescription = null,
+                        tint = Color(0xFF697471)
+                    )
+                },
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                            tint = Color(0xFF697471)
+                        )
+                    }
+                },
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                shape = RoundedCornerShape(18.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Brand,
+                    unfocusedBorderColor = Color(0xFFD9DEDC),
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
+                )
+            )
+
+            TextButton(
+                onClick = onForgot,
+                modifier = Modifier.align(Alignment.End),
+                contentPadding = PaddingValues(vertical = 8.dp)
+            ) {
+                Text(
+                    "Forgot password?",
+                    color = Brand,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            Button(
+                onClick = onSignIn,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Brand),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp)
+            ) {
+                Text("Sign in", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.width(10.dp))
+                Icon(Icons.Default.ArrowForward, contentDescription = null)
+            }
+
+            Spacer(Modifier.height(26.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HorizontalDivider(Modifier.weight(1f), color = Color(0xFFD6DBD9))
+                Text(
+                    "Or continue with",
+                    color = Color(0xFF7C8583),
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontSize = 14.sp
+                )
+                HorizontalDivider(Modifier.weight(1f), color = Color(0xFFD6DBD9))
+            }
+
+            Spacer(Modifier.height(22.dp))
+
+            OutlinedButton(
+                onClick = onSignIn,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(18.dp),
+                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFD9DEDC)),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
+            ) {
+                Text(
+                    "G",
+                    color = Color(0xFF4285F4),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Spacer(Modifier.width(18.dp))
+                Text(
+                    "Continue with Google",
+                    color = Color(0xFF071A14),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(Modifier.height(28.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Don’t have an account? ",
+                    color = Color(0xFF7C8583),
+                    fontSize = 15.sp
+                )
+                TextButton(
+                    onClick = onSignUp,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(
+                        "Create account",
+                        color = Brand,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
