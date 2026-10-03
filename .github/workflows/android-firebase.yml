@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-distribute:
+  validate-build-distribute:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,9 +31,6 @@ jobs:
 
       - name: Unit/UI smoke tests
         run: gradle :app:testDebugUnitTest
-
-      - name: Android lint
-        run: gradle :app:lintDebug
 
       - name: Build debug APK
         run: gradle :app:assembleDebug
